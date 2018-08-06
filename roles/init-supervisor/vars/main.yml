@@ -1,0 +1,7 @@
+---
+username: "{{ansible_ssh_user}}"
+supervisor_logs_dir: "~/logs"
+supervisor_conf_dir_name: "supervisor.d"
+supervisor_conf_dir: "~/{{supervisor_conf_dir_name}}"
+supervisor_program_conf_dir: "{{supervisor_conf_dir}}/conf"
+supervisor_program_workspace_dir: "~/workspace"

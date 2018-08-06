@@ -1,0 +1,12 @@
+[program:demo]
+directory = /home/{{username}}/workspace/demo
+command = bash -c "java -jar ./libs/*.jar --server.port=1111"
+autostart = true
+startsecs = 5
+autorestart = true
+startretries = 3
+user = {{username}}
+redirect_stderr = true
+stdout_logfile_maxbytes = 50MB
+stdout_logfile_backups = 201
+stdout_logfile = /home/{{username}}/logs/demo.log

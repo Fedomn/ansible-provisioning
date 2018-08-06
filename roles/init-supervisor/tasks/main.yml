@@ -1,0 +1,47 @@
+---
+- name: install supervisor?
+  shell: supervisord -v
+  register: supervisor_installed
+  ignore_errors: true
+
+- name: install supervisord
+  become: yes
+  easy_install: name=supervisor
+  when: supervisor_installed is failed
+
+- name: supervisor init logs dir
+  file: path={{supervisor_logs_dir}} state=directory
+
+- name: supervisor init conf dir
+  file: path={{supervisor_conf_dir}} state=directory
+
+- name: supervisor init program conf dir
+  file: path={{supervisor_program_conf_dir}} state=directory
+
+- name: supervisor copy conf
+  template: src=supervisord.conf.j2 dest={{supervisor_conf_dir}}/supervisord.conf
+
+- name: supervisor copy program conf
+  template: src={{item}} dest={{supervisor_program_conf_dir}}/{{item | basename | regex_replace('\.j2','')}}
+  with_fileglob:
+  - ../templates/program/*.j2
+
+- name: supervisor is running
+  shell: ps -e|grep supervisord
+  register: supervisor_running
+  ignore_errors: true
+
+- name: supervisor stop
+  shell: kill $(ps -e|grep supervisord|awk -F ' ' '{print $1}' |head -n 1)
+  when: supervisor_running is success
+
+- name: supervisor start
+  shell: supervisord -c {{supervisor_conf_dir}}/supervisord.conf
+
+- name: supervisorctl update
+  shell: supervisorctl -c {{supervisor_conf_dir}}/supervisord.conf update
+
+- name: supervisor int workspace dir
+  file: path={{supervisor_program_workspace_dir}}/{{item | basename | regex_replace('\.conf\.j2','')}} state=directory
+  with_fileglob:
+  - ../templates/program/*.j2

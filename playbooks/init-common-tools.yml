@@ -2,5 +2,6 @@
 - hosts: local
   remote_user: vagrant
   roles:
+    - { role: ../roles/init-alias }
     - { role: ../roles/init-tmux }
     - { role: ../roles/init-commander }

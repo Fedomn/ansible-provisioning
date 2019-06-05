@@ -2,4 +2,4 @@
 
 ## Set up supervisor
 
-Run ```ansible-playbook -i inventory.ini playbooks/test.yml```
+Run ```ansible-playbook -i inventory.ini playbooks/test.yml --private-key ...```

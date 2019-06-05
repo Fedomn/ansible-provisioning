@@ -1,0 +1,19 @@
+---
+- name: install tmux
+  yum:
+    name: tmux
+    state: present
+  become: yes
+
+- name: enable alias
+  lineinfile: dest="~/.bashrc" state=present line={{ item }}
+  with_items:
+    - alias t="tmux"
+    - alias ta="tmux attach"
+    - alias tl="tmux ls"
+    - alias tk="tmux kill-server"
+
+- name: copy over .tmux.conf
+  template:
+    src: ".tmux.conf.j2"
+    dest: "~/.tmux.conf"

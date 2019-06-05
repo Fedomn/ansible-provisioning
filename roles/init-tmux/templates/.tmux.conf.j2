@@ -1,0 +1,28 @@
+# prefix
+set -g prefix M-a
+set -g prefix2 M-a
+bind M-tab send-prefix -2
+unbind C-b
+unbind C-a
+
+# increase history size
+set -g history-limit 10000
+
+# sync panes
+bind C-s set-window-option synchronize-panes
+
+# split panes
+unbind '"'
+bind _ splitw -v
+unbind %
+bind - splitw -h
+
+# set index
+set -g base-index 1
+setw -g pane-base-index 1
+
+# change window
+bind Tab last-window
+
+# set status
+set -g status-position top
